@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <title>
+            <%= title %>
+        </title>
+        <script src="https://kit.fontawesome.com/6387d52da8.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/css/home.css">
+        <script src="/js/home.js" type="text/js"></script>
+    </head>
+    <body>
+        <div class="main-div">
+            <div>
+                <h3 id="heading">TODO App</h3>
+            </div>
+            <hr>
+            <div class="form-main-div">   
+                <form action="/create-note" method="POST">
+                <div class="initial-div" tabindex="1"> 
+                    <h4 id="desc-style">DESCRIPTION</h4>
+                    <input tabindex="1" type="text" placeholder="What do you need to do?" name="description" required>
+                </div>
+                    <hr>
+                    <div class="inner-form-div-2">
+                        <div style="width: 50%;">
+                        <h4 id="desc-style">CATEGORY</h4>
+                        <select id="tags" name="tag" required>
+                            <option value="" selected>Choose a category</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Work">Work</option>
+                            <option value="School">School</option>
+                            <option value="Cleaning">Cleaning</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        </div>
+                        <div style="width: 50%;">
+                            <h4 id="desc-style">DUE DATE</h4>
+                            <input style="width: 80%;" type="date" id="date" name="date" required>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="btn-div">
+                        <button id="add-btn" > 
+                            <i class="fas fa-plus"></i>ADD TASK
+                        </button>
+                    </form>
+                    <form action="/delete" method="POST">
+                        <button type="submit" id="del-btn"><i class="fas fa-trash-alt"></i>
+                            DELETE TASK</button>
+                    </div>
+                        <hr>
+                    <div id="notes-container"> 
+                       <ul> <% for(let i of notes_list) {%>
+                         <li class="notes"> 
+                             <div style="display: flex;justify-content: space-between;">
+                            <div class="details">
+                                <input type="checkbox" class="mycheck" onclick="strike()" value="<% i._id%>" name="<%= i._id%>">
+                                <label id="mylabel" for="<% i._id%>"><%= i.description%><br>
+                                </label>
+                                <%
+                                getDateFormat = function(value){
+                                    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                                    var now = new Date(value);
+                                    return months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+                                }
+                             %>
+                                <p><i class="fas fa-calendar-alt"style="margin-right: 10px;"></i><%= getDateFormat(i.date) %></p>
+                                <script>
+                                    function strike(){
+                                        var check = document.getElementsByClassName('mycheck');
+                                        var label = document.getElementsByTagName('label');
+                                        console.log(check);
+                                        for(var i=0;i<label.length;i++){
+                                            if(check[i].checked==true){
+                                            label[i].style.setProperty("text-decoration", "line-through");
+                                        }else{
+                                            label[i].style.setProperty("text-decoration", "none");
+                                        }
+                                        }
+                                        }
+                                </script>   
+                            </div>
+                            <div id="tag-span"><%= i.tag%></div>
+                        </div>
+                        <div style="width: 100%;
+                        margin-left: -15px;"><hr></div>    
+                         </li>
+                         <%}%> 
+                        </ul> 
+                    </div> 
+                </form>
+            </div>
+        </div>
+        
+    </body>
+</html>
